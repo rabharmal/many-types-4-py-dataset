@@ -1,4 +1,4 @@
 pandas
 dpu-utils
-sklearn
+scikit-learn
 cd4py
