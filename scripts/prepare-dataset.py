@@ -2,8 +2,8 @@ import json
 import os
 
 # Define the directory containing the JSON files and the base directory for source files
-json_directory = '../downloaded-dataset/ManyTypes4PyDataset-v0.7/processed_projects_clean'
-base_directory = ''
+json_directory = '../downloaded-dataset/ManyTypes4PyDataset-v0.7/processed_projects_complete'
+base_directory = '../'
 
 
 def read_file_content(file_path):
