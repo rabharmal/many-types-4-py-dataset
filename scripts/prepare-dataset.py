@@ -25,7 +25,6 @@ def update_json(json_path, base_dir):
             data = json.load(file)
     except FileNotFoundError:
         print(f"File not found: {json_path}")
-        not_found_files += 1
     except json.JSONDecodeError:
         print(f"Error decoding JSON in file: {json_path}")
         return
@@ -54,8 +53,6 @@ def update_json(json_path, base_dir):
         print(f"An error occurred while writing {json_path}: {e}")
         return
 
-    updated_files += 1
-    print(f"updated_files: {updated_files}")   
     print(f"JSON file updated successfully: {json_path}")
     
 
