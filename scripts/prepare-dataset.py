@@ -52,6 +52,11 @@ def update_json(json_path, base_dir):
                 # Add or update the "source_code" key-value pair
                 attributes["source_code"] = file_content
                 
+                # If file is empty then skip to add it in the output_data
+                if file_content == "":
+                    print(f"Empty file: {full_path}")
+                    continue
+                
                 # Determine the split type (train, test, valid) and populate output_data
                 split_type = attributes.get("set")
                 if split_type in ['train', 'test', 'valid']:
