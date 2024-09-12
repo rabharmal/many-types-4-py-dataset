@@ -1,6 +1,7 @@
 import json
 import os
-from glob import glob
+# translated_x.py needs to be in the same directory or correctly referenced in PYTHONPATH
+from translator_x import translate_content
 
 # Define the directory containing the JSON files and the base directory for source files
 json_directory = '../downloaded-dataset/ManyTypes4PyDataset-v0.7/processed_projects_clean'
@@ -12,6 +13,7 @@ output_data = {
     'test': {},
     'valid': {}
 }
+
 
 def read_file_content(file_path):
     """Reads the content of a file and returns it as a string."""
@@ -57,8 +59,9 @@ def update_json(json_path, base_dir):
                     print(f"Empty file: {full_path}")
                     continue
                 
-                # Determine the split type (train, test, valid) and populate output_data
                 split_type = attributes.get("set")
+
+                # # Populate output_data for each split type
                 if split_type in ['train', 'test', 'valid']:
                     if project_name not in output_data[split_type]:
                         output_data[split_type][project_name] = {"src_files": {}}
@@ -82,9 +85,9 @@ def process_json_files_in_directory(directory, base_dir):
             json_path = os.path.join(directory, file_name)
             update_json(json_path, base_dir)
 
-    # Write the split data to respective JSON files
+    # # Write the split data to respective JSON files
     for split_type, projects in output_data.items():
-        output_file_path = (f'../split_data/{split_type}.json')
+        output_file_path = (f'../split_dataset/{split_type}.json')
         try:
             with open(output_file_path, 'w', encoding='utf-8') as output_file:
                 json.dump(projects, output_file, indent=4)
@@ -92,5 +95,27 @@ def process_json_files_in_directory(directory, base_dir):
         except Exception as e:
             print(f"An error occurred while writing {split_type}.json: {e}")
 
+def translate_and_save_json_files(split_data_directory):
+    splits = ['train', 'test', 'valid']
+    for split in splits:
+        input_file_path = f'{split_data_directory}/{split}.json'
+        output_file_path = f'{split_data_directory}/{split}_translated.json'
+
+        try:
+            with open(input_file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            translated_data = translate_content(data)
+
+            with open(output_file_path, 'w', encoding='utf-8') as file:
+                json.dump(translated_data, file, indent=4)
+            print(f"Translated {split}.json file saved to {output_file_path}")
+        except FileNotFoundError:
+            print(f"File not found: {input_file_path}")
+        except json.JSONDecodeError:
+            print(f"Error decoding JSON from {input_file_path}")
+        except Exception as e:
+            print(f"An error occurred during the translation of {input_file_path}: {e}")
+
 # Run the script
 process_json_files_in_directory(json_directory, base_directory)
+translate_and_save_json_files('../split_dataset')  # adjust the path as needed
