@@ -2,9 +2,16 @@ import json
 import os
 from translator_x import translate_content
 
+# Get the absolute path of the directory where the current script is located
+script_directory = os.path.dirname(os.path.abspath(__file__))
+
 # Define the directory containing the JSON files and the base directory for source files
-json_directory = '/home/rashida/tools/rashida-thesis/many-types-4-py-dataset/downloaded-dataset/ManyTypes4PyDataset-v0.7/processed_projects_clean'
-base_directory = '/home/rashida/tools/rashida-thesis/many-types-4-py-dataset'
+json_directory = os.path.join(script_directory, '../downloaded-dataset/ManyTypes4PyDataset-v0.7/test_set')
+base_directory = os.path.join(script_directory, '../')
+
+# Resolve the relative paths to absolute paths
+json_directory = os.path.abspath(json_directory)
+base_directory = os.path.abspath(base_directory)
 
 # Output dictionaries to collect data, keyed by split type and then by project
 output_data = {
@@ -136,4 +143,4 @@ def translate_and_save_json_files(split_data_directory):
 
 # Run the script
 process_json_files_in_directory(json_directory, base_directory)
-translate_and_save_json_files('/home/rashida/tools/rashida-thesis/many-types-4-py-dataset/split_dataset')  # Adjust the path as needed
+translate_and_save_json_files(os.path.join(base_directory, 'split_dataset'))  # Adjust the path as needed
